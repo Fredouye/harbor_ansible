@@ -2,7 +2,7 @@ This Ansible role will create registries and projects in Harbor (using its REST 
 
 :exclamation: You should use an Ansible vault to store your Harbor credentials !
 
-Define the external registries you want to proxy using this variable :
+Define the external registries you want to proxy using this list :
 
 ```yaml
 harbor_registries:
@@ -18,7 +18,7 @@ harbor_registries:
     type: quay
 ```
 
-As of Harbor 2.7.0, the registry types can be :
+As of Harbor 2.7.0, common types of registries are :
 - `docker-hub`
 - `docker-registry`
 - `github-ghcr`
