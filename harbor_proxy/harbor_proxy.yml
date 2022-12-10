@@ -25,7 +25,7 @@
       ansible.builtin.set_fact:
         harbor_credentials: "{{ harbor_username }}:{{ harbor_password }}"
 
-    - name: Base64 encore user/password
+    - name: Base64 encode user/password
       ansible.builtin.set_fact:
         harbor_token: "{{ harbor_credentials | b64encode }}"
 
