@@ -25,11 +25,8 @@ As of Harbor 2.7.0, common types of registries are :
 - `quay`
 - `harbor`
 
-For every registry, this Ansible role will create :
-- a registry
-- a "proxy cache" project.
+For every external registry, this role will create :
+- a registry (`quay.io` for example)
+- a "proxy cache" project (`quay.io-proxy` for example).
 
-Each project name will be suffixed with the "-proxy" tag (`quay.io-proxy` for example).
-Projects will be public, and auto scan of CVEs will be enabled.
-
-Projects storage limits are optional.
+Projects storage limits (`2GB` for example) are optional.
