@@ -2,9 +2,8 @@
   ansible.builtin.uri:
     url: '{{ harbor_url }}/api/v2.0/registries?page=1&page_size=50'
     method: GET
-    force_basic_auth: true
-    url_username: '{{ harbor_username }}'
-    url_password: '{{ harbor_password }}'
+    headers:
+      authorization: 'Basic {{ harbor_token }}'
   register: registries
 
 - name: Search for registry
@@ -19,9 +18,8 @@
       ansible.builtin.uri:
         url: '{{ harbor_url }}/api/v2.0/registries'
         method: POST
-        force_basic_auth: true
-        url_username: '{{ harbor_username }}'
-        url_password: '{{ harbor_password }}'
+        headers:
+          authorization: 'Basic {{ harbor_token }}'
         status_code: 201
         body_format: json
         body:
@@ -34,9 +32,8 @@
       ansible.builtin.uri:
         url: '{{ harbor_url }}/api/v2.0/registries?page=1&page_size=50'
         method: GET
-        force_basic_auth: true
-        url_username: '{{ harbor_username }}'
-        url_password: '{{ harbor_password }}'
+        headers:
+          authorization: 'Basic {{ harbor_token }}'
       register: registries
     
     - name: Search for registry
@@ -50,9 +47,8 @@
   ansible.builtin.uri:
     url: '{{ harbor_url }}/api/v2.0/projects?page=1&page_size=50'
     method: GET
-    force_basic_auth: true
-    url_username: '{{ harbor_username }}'
-    url_password: '{{ harbor_password }}'
+    headers:
+      authorization: 'Basic {{ harbor_token }}'
   register: projects
 
 - name: Search for project
@@ -78,13 +74,12 @@
         src: harbor_project.json.j2
         dest: '{{ json_file_path }}'
 
-    - name: Ensure project is defined
+    - name: Ensure proxy project is defined
       ansible.builtin.uri:
         url: '{{ harbor_url }}/api/v2.0/projects'
         method: POST
-        force_basic_auth: true
-        url_username: '{{ harbor_username }}'
-        url_password: '{{ harbor_password }}'
+        headers:
+          authorization: 'Basic {{ harbor_token }}'
         status_code: 201
         body_format: json
         body: "{{ lookup('ansible.builtin.file',json_file_path) }}"
