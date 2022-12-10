@@ -86,7 +86,7 @@
         body: "{{ lookup('ansible.builtin.file',tempdir.path + '/harbor_project.json') }}"
 
     - name: Ensure temporary directory is removed
-      file:
+      ansible.builtin.file:
         path: '{{ tempdir.path }}'
         state: absent
   when: project_id | length == 0
