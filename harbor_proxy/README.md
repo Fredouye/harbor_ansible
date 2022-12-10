@@ -32,4 +32,4 @@ For every registry, this Ansible role will create :
 Each project name will be suffixed with the "-proxy" tag (`quay.io-proxy` for example).
 Projects will be public, and auto scan of CVEs will be enabled.
 
-Projects storage limits are optionnal.
+Projects storage limits are optional.
