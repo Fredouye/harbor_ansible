@@ -9,6 +9,7 @@ harbor_registries:
   - name: projects.registry.vmware.com
     url: https://projects.registry.vmware.com
     type: harbor
+    storage_limit: 10 GB
   - name: k8s.gcr.io
     url: https://k8s.gcr.io
     type: docker-registry
