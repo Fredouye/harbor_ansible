@@ -1,6 +1,9 @@
 {
     "project_name": "{{ item.name }}-proxy",
     "public": true,
+{% if item.storage_limit is defined %}
+    "storage_limit": {{ item.storage_limit | human_to_bytes }},
+{% endif %}
     "registry_id": {{ registry_id | first | int }},
     "metadata": {
         "auto_scan": "true"
