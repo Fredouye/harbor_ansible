@@ -24,12 +24,10 @@
     - name: Convert user/password to a string
       ansible.builtin.set_fact:
         harbor_credentials: "{{ harbor_username }}:{{ harbor_password }}"
-      run_once: true
 
     - name: Base64 encore user/password
       ansible.builtin.set_fact:
         harbor_token: "{{ harbor_credentials | b64encode }}"
-      run_once: true
 
   roles:
     - harbor_proxy
