@@ -1,0 +1,22 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  vars:
+    harbor_url: https://harbor.foo.com
+    harbor_username: my-admin-username
+    harbor_password: my-admin-password
+    harbor_registries:
+      - name: projects.registry.vmware.com
+        url: https://projects.registry.vmware.com
+        type: harbor
+      - name: k8s.gcr.io
+        url: https://k8s.gcr.io
+        type: docker-registry
+      - name: quay.io
+        url: https://quay.io
+        type: quay
+  roles:
+    - harbor_proxy
