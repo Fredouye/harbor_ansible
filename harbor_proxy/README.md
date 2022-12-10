@@ -16,7 +16,7 @@ If you're using a self signed TLS certificate, set this variable to `false` :
 check_tls_certificate: false
 ```
 
-If this variable is not set, TLS certificate will be checked.
+If this variable is not set, TLS certificate will be checked (this can be changed in the `defaults` folder of this role).
 
 Define the external registries you want to proxy using this list :
 
