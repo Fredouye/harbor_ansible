@@ -1,0 +1,4 @@
+- name: Include tasks file
+  ansible.builtin.include_tasks: harbor_tasks.yml
+  loop: "{{ harbor_registries }}"
+  no_log: true
