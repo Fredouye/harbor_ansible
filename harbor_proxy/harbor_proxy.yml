@@ -15,9 +15,9 @@
       - name: k8s.gcr.io
         url: https://k8s.gcr.io
         type: docker-registry
-      - name: toto.io
-        url: https://projects.registry.vmware.com
-        type: harbor
+      - name: quay.io
+        url: https://quay.io
+        type: quay
         storage_limit: 4GB
 
   pre_tasks:
