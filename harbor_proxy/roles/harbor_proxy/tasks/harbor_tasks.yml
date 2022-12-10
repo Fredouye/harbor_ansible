@@ -69,14 +69,10 @@
         suffix: project_json
       register: tempdir
 
-    - name: Set fact for JSON file path
-      ansible.builtin.set_fact:
-        json_file_path: '{{ tempdir.path }}/harbor_project.json'
-
     - name: Create JSON file
       ansible.builtin.template:
         src: harbor_project.json.j2
-        dest: '{{ json_file_path }}'
+        dest: '{{ tempdir.path }}/harbor_project.json'
 
     - name: Ensure proxy project is defined
       ansible.builtin.uri:
@@ -87,7 +83,7 @@
           authorization: 'Basic {{ harbor_token }}'
         status_code: 201
         body_format: json
-        body: "{{ lookup('ansible.builtin.file',json_file_path) }}"
+        body: "{{ lookup('ansible.builtin.file',tempdir.path + '/harbor_project.json') }}"
 
     - name: Ensure temporary directory is removed
       file:
