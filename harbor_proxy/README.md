@@ -1,4 +1,6 @@
-This role will create registries and projects in Harbor, which will serve as a proxy.
+This role will create registries and projects in Harbor (using its REST API), which will serve as a proxy.
+
+> You should use an Ansible vault to store your Harbor credentials !
 
 Define the external registries you want to proxy using this variable :
 
