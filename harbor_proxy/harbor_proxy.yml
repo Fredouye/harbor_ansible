@@ -21,13 +21,9 @@
         storage_limit: 4GB
 
   pre_tasks:
-    - name: Convert user/password to a string
+    - name: Convert user/password to a Bearer token
       ansible.builtin.set_fact:
-        harbor_credentials: "{{ harbor_username }}:{{ harbor_password }}"
-
-    - name: Base64 encode user/password
-      ansible.builtin.set_fact:
-        harbor_token: "{{ harbor_credentials | b64encode }}"
+        harbor_token: "{{ (harbor_username + ':' + harbor_password) | b64encode }}"
 
   roles:
     - harbor_proxy
