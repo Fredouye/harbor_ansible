@@ -1,0 +1,96 @@
+- name: Get a list of registries
+  ansible.builtin.uri:
+    url: '{{ harbor_url }}/api/v2.0/registries?page=1&page_size=50'
+    method: GET
+    force_basic_auth: true
+    url_username: '{{ harbor_username }}'
+    url_password: '{{ harbor_password }}'
+  register: registries
+
+- name: Search for registry
+  ansible.builtin.set_fact:
+    registry_id: '{{ registries | community.general.json_query(my_query) }}'
+  vars:
+    my_query: "json[?name=='{{ item.name }}'].id"
+
+- name: Ensure registry is created
+  block:
+    - name: Create registry
+      ansible.builtin.uri:
+        url: '{{ harbor_url }}/api/v2.0/registries'
+        method: POST
+        force_basic_auth: true
+        url_username: '{{ harbor_username }}'
+        url_password: '{{ harbor_password }}'
+        status_code: 201
+        body_format: json
+        body:
+          name: '{{ item.name }}'
+          url: '{{ item.url }}'
+          type: '{{ item.type }}'
+          insecure: false
+
+    - name: Get a list of registries
+      ansible.builtin.uri:
+        url: '{{ harbor_url }}/api/v2.0/registries?page=1&page_size=50'
+        method: GET
+        force_basic_auth: true
+        url_username: '{{ harbor_username }}'
+        url_password: '{{ harbor_password }}'
+      register: registries
+    
+    - name: Search for registry
+      ansible.builtin.set_fact:
+        registry_id: '{{ registries | community.general.json_query(my_query) }}'
+      vars:
+        my_query: "json[?name=='{{ item.name }}'].id"
+  when: registry_id | length == 0
+
+- name: Get a list of projects
+  ansible.builtin.uri:
+    url: '{{ harbor_url }}/api/v2.0/projects?page=1&page_size=50'
+    method: GET
+    force_basic_auth: true
+    url_username: '{{ harbor_username }}'
+    url_password: '{{ harbor_password }}'
+  register: projects
+
+- name: Search for project
+  ansible.builtin.set_fact:
+    project_id: '{{ projects | community.general.json_query(my_query) }}'
+  vars:
+    my_query: "json[?name=='{{ item.name }}-proxy'].project_id"
+
+- name: Create project
+  block:
+    - name: Create temporary directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: project_json
+      register: tempdir
+
+    - name: Set fact for JSON file path
+      ansible.builtin.set_fact:
+        json_file_path: '{{ tempdir.path }}/harbor_project.json'
+
+    - name: Create JSON file
+      ansible.builtin.template:
+        src: /tmp/harbor_project.json.j2
+        dest: '{{ json_file_path }}'
+
+    - name: Ensure project is defined
+      ansible.builtin.uri:
+        url: '{{ harbor_url }}/api/v2.0/projects'
+        method: POST
+        force_basic_auth: true
+        url_username: '{{ harbor_username }}'
+        url_password: '{{ harbor_password }}'
+        status_code: 201
+        body_format: json
+        body: "{{ lookup('ansible.builtin.file',json_file_path) }}"
+
+    - name: Ensure temporary directory is removed
+      file:
+        path: '{{ tempdir.path }}'
+        state: absent
+  when: project_id | length == 0
