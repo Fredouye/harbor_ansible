@@ -2,6 +2,22 @@ This Ansible role will create registries and projects in Harbor (using its REST 
 
 :exclamation: You should use an Ansible vault to store your Harbor credentials !
 
+Firstly, define your Harbor instance :
+
+```yaml
+harbor_url: https://harbor.foo.com
+harbor_username: my-admin-username
+harbor_password: my-admin-password
+```
+
+If you're using a self signed TLS certificate, set this variable to `false` :
+
+```yaml
+check_tls_certificate: false
+```
+
+If this variable is not set, TLS certificate will be checked.
+
 Define the external registries you want to proxy using this list :
 
 ```yaml
