@@ -19,11 +19,6 @@
         url: https://quay.io
         type: quay
         storage_limit: 4GB
-
-  pre_tasks:
-    - name: Convert user/password to a Bearer token
-      ansible.builtin.set_fact:
-        harbor_token: "{{ (harbor_username + ':' + harbor_password) | b64encode }}"
-
+  
   roles:
     - harbor_proxy
