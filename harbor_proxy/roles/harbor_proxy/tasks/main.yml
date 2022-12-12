@@ -1,5 +1,5 @@
 - name: Ensure jmespath Python module is installed
-  pip:
+  ansible.builtin.pip:
     name: jmespath
     state: present
     extra_args: "--no-cache-dir"
