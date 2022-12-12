@@ -3,7 +3,6 @@
     name: jmespath
     state: present
     extra_args: "--no-cache-dir"
-  delegate_to: localhost
 
 - name: Convert user/password to a Bearer token
   ansible.builtin.set_fact:
